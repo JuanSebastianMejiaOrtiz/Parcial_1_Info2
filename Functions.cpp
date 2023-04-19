@@ -39,10 +39,12 @@ unsigned char*** FillCursos(short* fil){
         cout << "La materia que va a ingresar tiene laboratorio? (0/1 (No/Si)): ";
         cin >> lab;
         for (unsigned short c = 0; c < columnas; c++){
+            //Modificar
             if (c == 0){
                 cout << "Ingrese el codigo de la materia " << f+1 << " : ";
                 cin >> cad;
             }
+            //Quitar/Modificar
             else if (c == 1){
                 cout << "Ingrese el nombre de la materia " << f+1 << " (en vez de espacio ponga guión '-') (hasta 64 caracteres): ";
                 cin >> cad;
@@ -69,6 +71,7 @@ unsigned char*** FillCursos(short* fil){
                 }
                 else cad[0] = '\0';
             }
+            //Quitar/Modificar
             else if (c == 6){
                 cout << "Ingrese la cantidad de creditos de la materia " << f+1 << " : ";
                 cin >> cad;
@@ -88,18 +91,65 @@ void Add_Act(unsigned char*** horario);
 void DeleteAct(unsigned char*** horario);
 
 //Mostrar en Terminal
+//H
 void PrintHorario(unsigned char*** horario);
 
 //Uso de Archivos
 void SaveHorario(unsigned char*** horario);
-void SaveCursos(unsigned char*** curso);
+void SaveCursos(unsigned char*** cursos);
 unsigned char*** LoadHorario(char* id);
-unsigned char*** LoadCursos(char* id);
-bool ExisteHorario(char* id);
-bool ExisteCursos(char* id);
+unsigned char*** LoadCurso(char* id);
+unsigned char*** LoadCursosM(char* id);
+
+bool ExisteHorario(unsigned char* id){
+    int NC_Id = ContarCaracteres(id), i;
+    unsigned char* Real = JuntarChar(id, 0);
+    char A[7+4+NC_Id+1+3] = "../";
+    fstream text;
+    bool flag;
+
+    for (i = 0; i < NC_Id+7+4; i++){
+        A[i+3] = Real[i];
+        A[i+1+3] = '\0';
+    }
+
+    cout << A << endl;
+    text.open(A, ios_base::in);
+    flag = text.is_open();
+    text.close();
+
+    if (flag) return 1;
+    
+    return 0;
+}
+
+bool ExisteCursos(unsigned char* id);
 
 //Obtener datos
-short ObtainCredito(unsigned char* cred);
+short* ObtainHTI(unsigned char*** curso, int fil){
+    short* hti = new short [fil];
+    short creditox;
+    
+    for (int i=0;i<fil;i++){
+        creditox=Credito(curso[i][6]);
+        hti[i]=(creditox*48)/16;
+    }
+    return hti;
+}
+
+short Credito(unsigned char* cred){
+    short numcred;
+    int temp;
+    temp=ContarCaracteres(cred);
+    if (temp==1){
+        numcred=cred[0]-48;
+    }
+    else{
+        numcred = (cred[0]-48)*10;
+        numcred += cred[1]-48;
+    } 
+    return numcred;
+}
 
 int ContarCaracteres(unsigned char* cadena){
     int i;
@@ -111,6 +161,8 @@ unsigned char* JuntarChar(unsigned char* id, bool hoc){
     int numcharID = ContarCaracteres(id), i;
     unsigned char* a;
 
+    //0: Horario
+    //1: Curso
     if(hoc){
         a = new unsigned char[5+4+numcharID];
 
