@@ -88,17 +88,115 @@ unsigned char*** FillCursos(short* fil){
 
 //Modificar Horario
 void Add_Act(unsigned char*** horario);
-void DeleteAct(unsigned char*** horario);
+
+void DeleteAct(unsigned char*** horario){
+    char fi[5], co;
+    
+    cout << "Ingrese el dia de la actividad que desee eliminar (L:Lunes, M:Martes, W:Miercoles, J:Jueves, V:Viernes, S:Sabado, D:Domingo): ";
+    cin >> co;
+
+    cout << "Ingrese la hora que desea eliminar(ejm: 12-14): ";
+    cin >> fi;
+
+    
+}
 
 //Mostrar en Terminal
-//H
-void PrintHorario(unsigned char*** horario);
+void PrintHorario(unsigned char*** horario){
+    for (short i = 0; i < 14; i++){
+        for (short j = 0; j < 7; j++){
+            if (horario[i][j][0]=='\0'){
+                cout << "---" << '\t';
+            }
+            else cout << horario[i][j] << '\t';
+        }
+        cout << '\n';
+    }
+}
 
 //Uso de Archivos
 void SaveHorario(unsigned char*** horario);
 void SaveCursos(unsigned char*** cursos);
 unsigned char*** LoadHorario(char* id);
-unsigned char** LoadCurso(char* id);
+
+unsigned char** LoadCurso(char* code){
+    fstream archivo;
+    unsigned char** p = new unsigned char* [2];
+    bool flag, materia;
+    int temp,j,i;
+    
+    //PONER UNA VARIABLE EN SU LUGAR (Parametro creo yo)
+    archivo.open ("Infocursos.txt", ios_base::in);
+    flag = archivo.is_open();
+    if (flag){
+        const int longitud=66;
+        char* linea= new char [longitud];
+        while (archivo.getline(linea, longitud)){ 
+            temp=0;
+            for (i=0;linea[i]!='\t';i++){
+                if (*(code+i)==linea[i]) temp++;
+            }
+            if (temp==i){
+                unsigned char* nombre=new unsigned char [50];
+                for (j=0;linea[++i]!='\t';j++){
+                    nombre[j]=linea[i];
+                }
+                nombre[j+1]='\0';
+                p[0]=nombre;
+                unsigned char* creditos=new unsigned char [2];
+                for (j=0;linea[++i]!='\n';j++){
+                    creditos[j]=linea[i];
+                }
+                p[1]=creditos;
+            }
+        }
+        archivo.close();
+        return p;
+    }
+    else{
+        cout<<"Error en el archivo de cursos"<<endl;
+    }
+} 
+
+/*
+unsigned char** LoadCurso(char* code){
+    fstream archivo;
+    unsigned char** p = new unsigned char* [2];
+    bool flag, materia;
+    int temp,j,i;
+    archivo.open("C:/Users/cuent/Documents/build-main-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/Infocursos.txt", ios_base::in);
+    flag = archivo.is_open();
+    if (flag){
+        const int longitud=66;
+        char* linea= new char [longitud];
+        while (archivo.getline(linea, longitud)){
+            temp=0;
+            for (i=0;linea[i]!='\t';i++){
+                if (*(code+i)==linea[i]) temp++;
+            }
+            if (temp==i){
+                unsigned char* nombre=new unsigned char [50];
+                for (j=0;linea[++i]!='\t';j++){
+                    nombre[j]=linea[i];
+                }
+                nombre[j+1]='\0';
+                p[0]=nombre;
+                unsigned char* creditos=new unsigned char [2];
+                for (j=0;linea[++i]!='\n';j++){
+                    creditos[j]=linea[i];
+                }
+                p[1]=creditos;
+            }
+        }
+        archivo.close();
+        return p;
+    }
+    else{
+        cout<<"Error en el archivo de cursos"<<endl;
+    }
+}
+*/
+
 unsigned char*** LoadCursosM(char* id);
 
 bool ExisteHorario(unsigned char* id){

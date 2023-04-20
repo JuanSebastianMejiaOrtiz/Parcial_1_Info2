@@ -26,7 +26,7 @@ void SaveHorario(unsigned char*** horario); //Lf
 void SaveCursos(unsigned char*** cursos, short fil); //Lf
 
 unsigned char*** LoadHorario(unsigned char* id); //L
-unsigned char** LoadCurso(unsigned char* id);
+unsigned char** LoadCurso(unsigned char* code);
 unsigned char*** LoadCursosA(unsigned char* id); //L
 
 bool ExisteHorario(unsigned char* id);
