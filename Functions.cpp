@@ -98,7 +98,7 @@ void PrintHorario(unsigned char*** horario);
 void SaveHorario(unsigned char*** horario);
 void SaveCursos(unsigned char*** cursos);
 unsigned char*** LoadHorario(char* id);
-unsigned char*** LoadCurso(char* id);
+unsigned char** LoadCurso(char* id);
 unsigned char*** LoadCursosM(char* id);
 
 bool ExisteHorario(unsigned char* id){
@@ -113,7 +113,6 @@ bool ExisteHorario(unsigned char* id){
         A[i+1+3] = '\0';
     }
 
-    cout << A << endl;
     text.open(A, ios_base::in);
     flag = text.is_open();
     text.close();
@@ -123,7 +122,26 @@ bool ExisteHorario(unsigned char* id){
     return 0;
 }
 
-bool ExisteCursos(unsigned char* id);
+bool ExisteCursos(unsigned char* id){
+    int NC_Id = ContarCaracteres(id), i;
+    unsigned char* Real = JuntarChar(id, 1);
+    char A[5+4+NC_Id+1+3] = "../";
+    fstream text;
+    bool flag;
+
+    for (i = 0; i < NC_Id+5+4; i++){
+        A[i+3] = Real[i];
+        A[i+1+3] = '\0';
+    }
+
+    text.open(A, ios_base::in);
+    flag = text.is_open();
+    text.close();
+
+    if (flag) return 1;
+    
+    return 0;
+}
 
 //Obtener datos
 short* ObtainHTI(unsigned char*** curso, int fil){

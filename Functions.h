@@ -11,10 +11,10 @@ void Programa();
 //Crear Matriz
 unsigned char*** CreateMatrix(unsigned short filas, unsigned short columnas); //Filas y columnas de la matriz que se va a crear
 unsigned char*** FillCursos(short* fil); //L
-unsigned char*** FillCursosM(); //L
+unsigned char*** FillCursosA(); //L
 
 //Modificar Horario
-void AddHTD(); //L
+void AddHTD(unsigned char*** horario, unsigned char *** cursos, short cfil); //L
 void Add_Act(unsigned char*** horario); //L
 void DeleteAct(unsigned char*** horario); //Ez
 
@@ -23,11 +23,11 @@ void PrintHorario(unsigned char*** horario); //Ez
 
 //Uso de Archivos
 void SaveHorario(unsigned char*** horario); //Lf
-void SaveCursos(unsigned char*** cursos); //Lf
+void SaveCursos(unsigned char*** cursos, short fil); //Lf
 
 unsigned char*** LoadHorario(unsigned char* id); //L
-unsigned char*** LoadCurso(unsigned char* id); //L
-unsigned char*** LoadCursosM(unsigned char* id); //L
+unsigned char** LoadCurso(unsigned char* id);
+unsigned char*** LoadCursosA(unsigned char* id); //L
 
 bool ExisteHorario(unsigned char* id);
 bool ExisteCursos(unsigned char* id);
